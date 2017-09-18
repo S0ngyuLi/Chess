@@ -18,16 +18,16 @@ public abstract class Piece {
         this.isOnboard = true;
     }
 
-    public void willMove(ChessboardCell targetCell) {
+    public void willMove(ChessboardCell targetCell, boolean animated) {
         if(this.checkViablePath(targetCell)) {
             if (targetCell.isVacant() != true) {
                 this.getChessboardCell().getChessboard().capturePieces(targetCell);
             }
-            this.didMove(targetCell);
+            this.didMove(targetCell, animated);
         }
     }
 
-    public void didMove(ChessboardCell targetCell) {
+    public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
         targetCell.setPiece(this);
         this.cell = targetCell;

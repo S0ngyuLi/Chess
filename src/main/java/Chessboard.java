@@ -4,6 +4,7 @@
  * Chessboard object, which hold chessboard cells as composition, as well as player information
  *
  */
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,9 @@ public class Chessboard {
     private HashSet<Piece> box; // A box of pieces that have been captured
     private King kingForA;
     private King kingForB;
+
+    private HashSet<Piece> piecesForPlayerA; // All of A's pieces on board (not captured)
+    private HashSet<Piece> piecesForPlayerB; // All of B's pieces on board (not captured)
 
     public Player getPlayerA() {
         return playerA;
@@ -32,6 +36,8 @@ public class Chessboard {
         this.playerB = playerB;
         this.appDelegate = delegate;
         this.box = new HashSet<Piece>();
+        this.piecesForPlayerA = new HashSet<>();
+        this.piecesForPlayerB = new HashSet<>();
     }
 
     public void initializeBoard() {
@@ -42,46 +48,100 @@ public class Chessboard {
         }
 
         for (int i = 0; i < 8; i++) {
-            new Pawn(this.playerA, cells[1][i]);
-            new Pawn(this.playerB, cells[6][i]);
+            piecesForPlayerA.add(new Pawn(this.playerA, cells[1][i]));
+            piecesForPlayerB.add(new Pawn(this.playerB, cells[6][i]));
         }
 
         this.kingForA = new King(this.playerA, cells[0][3]);
         this.kingForB = new King(this.playerA, cells[7][3]);
 
-        new Queen(this.playerA, cells[0][4]);
-        new Queen(this.playerB, cells[7][4]);
+        piecesForPlayerA.add(kingForA);
+        piecesForPlayerB.add(kingForB);
 
-        new Rook(this.playerA, cells[0][0]);
-        new Rook(this.playerA, cells[0][7]);
-        new Rook(this.playerB, cells[7][0]);
-        new Rook(this.playerB, cells[7][7]);
+        piecesForPlayerA.add(new Queen(this.playerA, cells[0][4]));
+        piecesForPlayerB.add(new Queen(this.playerB, cells[7][4]));
 
-        new Knight(this.playerA, cells[0][1]);
-        new Knight(this.playerA, cells[0][6]);
-        new Knight(this.playerB, cells[7][1]);
-        new Knight(this.playerB, cells[7][6]);
+        piecesForPlayerA.add(new Rook(this.playerA, cells[0][0]));
+        piecesForPlayerA.add(new Rook(this.playerA, cells[0][7]));
+        piecesForPlayerB.add(new Rook(this.playerB, cells[7][0]));
+        piecesForPlayerB.add(new Rook(this.playerB, cells[7][7]));
 
-        new Bishop(this.playerA, cells[0][2]);
-        new Bishop(this.playerA, cells[0][5]);
-        new Bishop(this.playerB, cells[7][2]);
-        new Bishop(this.playerB, cells[7][5]);
+        piecesForPlayerA.add(new Knight(this.playerA, cells[0][1]));
+        piecesForPlayerA.add(new Knight(this.playerA, cells[0][6]));
+        piecesForPlayerB.add(new Knight(this.playerB, cells[7][1]));
+        piecesForPlayerB.add(new Knight(this.playerB, cells[7][6]));
+
+        piecesForPlayerA.add(new Bishop(this.playerA, cells[0][2]));
+        piecesForPlayerA.add(new Bishop(this.playerA, cells[0][5]));
+        piecesForPlayerB.add(new Bishop(this.playerB, cells[7][2]));
+        piecesForPlayerB.add(new Bishop(this.playerB, cells[7][5]));
+    }
+
+    // Function evaluates to true if A checkmates B
+
+    private boolean checkCheckMateForA() {
+        for (Piece piece: this.piecesForPlayerA) {
+            ArrayList<ChessboardCell> possibleRoutesA = piece.getAllPossibleRoutes();
+            if(possibleRoutesA.contains(kingForB.getChessboardCell())) {
+                for (Piece rivalPiece : this.piecesForPlayerB) {
+                    ArrayList<ChessboardCell> possibleRoutesB = rivalPiece.getAllPossibleRoutes();
+                    for (ChessboardCell possibleMove: possibleRoutesB) {
+                        // Assume possible moves
+                        ChessboardCell currentRivalPosition = rivalPiece.getChessboardCell();
+                        rivalPiece.willMove(possibleMove, false);
+
+                        for (Piece assumedPiece: this.piecesForPlayerA) {
+                            ArrayList<ChessboardCell> assumedPossibleRoutesA = assumedPiece.getAllPossibleRoutes();
+                            if (assumedPossibleRoutesA.contains(kingForB.getChessboardCell())) {
+                                return true;
+                            }
+                        }
+
+                        // Resume possible moves
+                        rivalPiece.willMove(currentRivalPosition, false);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkCheckMateForB() {
+        for (Piece piece: this.piecesForPlayerB) {
+            ArrayList<ChessboardCell> possibleRoutesB = piece.getAllPossibleRoutes();
+            if(possibleRoutesB.contains(kingForA.getChessboardCell())) {
+                for (Piece rivalPiece : this.piecesForPlayerA) {
+                    ArrayList<ChessboardCell> possibleRoutesA = rivalPiece.getAllPossibleRoutes();
+                    for (ChessboardCell possibleMove: possibleRoutesB) {
+                        // Assume possible moves
+                        ChessboardCell currentRivalPosition = rivalPiece.getChessboardCell();
+                        rivalPiece.willMove(possibleMove, false);
+
+                        for (Piece assumedPiece: this.piecesForPlayerB) {
+                            ArrayList<ChessboardCell> assumedPossibleRoutesB = assumedPiece.getAllPossibleRoutes();
+                            if (assumedPossibleRoutesB.contains(kingForA.getChessboardCell())) {
+                                return true;
+                            }
+                        }
+
+                        // Resume possible moves
+                        rivalPiece.willMove(currentRivalPosition, false);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void checkCheckMate() {
-        List<ChessboardCell> routeForA = kingForA.getAllPossibleRoutes();
-        if (routeForA.size() == 0) {
-            appDelegate.endWithWinner(this.playerB);
+        if (checkCheckMateForA()) {
+            appDelegate.endWithWinner(playerB);
             return;
         }
-
-        List<ChessboardCell> routeForB = kingForB.getAllPossibleRoutes();
-        if (routeForB.size() == 0) {
-            appDelegate.endWithWinner(this.playerA);
+        if (checkCheckMateForB()) {
+            appDelegate.endWithWinner(playerA);
             return;
         }
-
-        return; // Nobody wins
     }
     /*
      * Get Cell at a certain location.
@@ -97,6 +157,13 @@ public class Chessboard {
      * Warning: Call it only if you have verified that targetCell does hold an enemy piece
      */
     public void capturePieces(ChessboardCell targetCell) {
+        Player owner = targetCell.getPiece().getOwner();
+        if (owner == playerA) {
+            piecesForPlayerA.remove(targetCell.getPiece());
+        }
+        else {
+            piecesForPlayerB.remove(targetCell.getPiece());
+        }
         box.add(targetCell.getPiece());
         targetCell.getPiece().willRemoveFromBoard();
     }
