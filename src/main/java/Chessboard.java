@@ -12,6 +12,15 @@ public class Chessboard {
     private HashSet<Piece> box; // A box of pieces that have been captured
     private King kingForA;
     private King kingForB;
+
+    public Player getPlayerA() {
+        return playerA;
+    }
+
+    public Player getPlayerB() {
+        return playerB;
+    }
+
     private Player playerA; // Upper side player
     private Player playerB; // Lower side player
     private AppDelegate appDelegate;
@@ -87,6 +96,7 @@ public class Chessboard {
      * Warning: Call it only if you have verified that targetCell does hold an enemy piece
      */
     public void capturePieces(ChessboardCell targetCell) {
+        box.add(targetCell.getPiece());
         targetCell.getPiece().willRemoveFromBoard();
     }
 }

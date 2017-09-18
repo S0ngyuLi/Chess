@@ -26,6 +26,8 @@ public abstract class Piece {
 
     public void didMove(ChessboardCell targetCell) {
         // TODO: Update GUI here
+        targetCell.setPiece(this);
+        this.cell = targetCell;
         this.cell.checkCheckmate();
     }
 
