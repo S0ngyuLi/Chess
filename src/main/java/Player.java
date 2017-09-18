@@ -1,5 +1,7 @@
 /**
  * Created by songyuli on 9/17/17.
+ *
+ * Player Class. An aggregation of App Delegate class.
  */
 public class Player {
     private String name;

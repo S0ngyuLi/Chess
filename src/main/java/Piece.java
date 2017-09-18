@@ -1,5 +1,7 @@
 /**
  * Created by songyuli on 9/17/17.
+ *
+ * Abstract class of piece
  */
 public abstract class Piece {
     private boolean isOnboard;
@@ -7,7 +9,6 @@ public abstract class Piece {
     private ChessboardCell cell;
 
     public Piece(Player player, ChessboardCell cell) {
-        super();
         this.owner = player;
         cell.setPiece(this);
         this.cell = cell;
@@ -15,19 +16,26 @@ public abstract class Piece {
     }
 
     public void willMove(ChessboardCell targetCell) {
-        // Does nothing
+        if(this.checkViablePath(targetCell)) {
+            if (targetCell.isVacant() != true) {
+                this.getChessboardCell().getChessboard().capturePieces(targetCell);
+            }
+            this.didMove(targetCell);
+        }
     }
 
     public void didMove(ChessboardCell targetCell) {
-        // Does nothing
+        // TODO: Update GUI here
+        this.cell.checkCheckmate();
     }
 
     public void willRemoveFromBoard() {
-        // Does nothing
+        this.didRemoveFromBoard();
     }
 
     public void didRemoveFromBoard() {
-        // Does nothing
+        // TODO: Update GUI here
+        this.isOnboard = false;
     }
 
     public boolean isOnBoard() {
@@ -38,9 +46,9 @@ public abstract class Piece {
         return this.cell;
     }
 
-    public abstract boolean checkViablePath(ChessboardCell targetCell);
-
     public Player getOwner() {
         return this.owner;
     }
+
+    public abstract boolean checkViablePath(ChessboardCell targetCell);
 }

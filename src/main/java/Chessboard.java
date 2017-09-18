@@ -1,10 +1,12 @@
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 /**
  * Created by songyuli on 9/17/17.
+ *
+ * Chessboard object, which hold chessboard cells as composition, as well as player information
+ *
  */
+import java.util.HashSet;
+import java.util.List;
+
 public class Chessboard {
     private ChessboardCell [][] cells;
     private HashSet<Piece> box; // A box of pieces that have been captured
@@ -35,7 +37,7 @@ public class Chessboard {
         }
 
         this.kingForA = new King(this.playerA, cells[0][3]);
-        this.kingForA = new King(this.playerA, cells[0][3]);
+        this.kingForB = new King(this.playerA, cells[7][3]);
 
         new Queen(this.playerA, cells[0][4]);
         new Queen(this.playerB, cells[7][4]);
@@ -71,11 +73,20 @@ public class Chessboard {
 
         return; // Nobody wins
     }
-
+    /*
+     * Get Cell at a certain location.
+     */
     public ChessboardCell getCell(int x, int y) {
         if (x < 8 && x >= 0 && y < 8 && y >= 0) {
             return cells[x][y];
         }
         return null;
+    }
+    /*
+     * Call this function if we want to capture piece at a certain cell.
+     * Warning: Call it only if you have verified that targetCell does hold an enemy piece
+     */
+    public void capturePieces(ChessboardCell targetCell) {
+        targetCell.getPiece().willRemoveFromBoard();
     }
 }

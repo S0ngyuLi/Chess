@@ -1,5 +1,8 @@
 /**
  * Created by songyuli on 9/17/17.
+ *
+ * Delegate the whole software logic
+ *
  */
 public class AppDelegate {
     private Chessboard board;
@@ -14,6 +17,7 @@ public class AppDelegate {
 
     public void initGame() {
         board.initializeBoard();
+        // TODO: Waiting for input
     }
     public void endWithWinner(Player player){
         player.win();

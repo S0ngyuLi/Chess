@@ -1,5 +1,8 @@
 /**
  * Created by songyuli on 9/17/17.
+ *
+ * Chessboard Cell object, which is composition of chessboard
+ *
  */
 public class ChessboardCell {
     private Piece piece;
@@ -25,7 +28,7 @@ public class ChessboardCell {
         return y_cord;
     }
 
-    public boolean checkIfVacant() {
+    public boolean isVacant() {
         if(this.piece == null) {
             return true;
         }
@@ -36,7 +39,7 @@ public class ChessboardCell {
 
     public void setPiece(Piece newPiece){
         if (this.piece != null) {
-            throw new ArithmeticException("A cell should not hold two pieces.");
+            throw new ArithmeticException("Cell Error for " + x_cord + ", " + y_cord + ": Cell should not hold two pieces.");
         }
         else {
             this.piece = newPiece;
@@ -49,5 +52,8 @@ public class ChessboardCell {
 
     public ChessboardCell getCell(int x, int y) {
         return chessboard.getCell(x, y);
+    }
+    public Chessboard getChessboard() {
+        return this.chessboard;
     }
 }
