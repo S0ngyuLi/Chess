@@ -19,7 +19,7 @@ public class Queen extends Piece {
             int verticalDistance = abs(targetCell.getY() - this.getChessboardCell().getY());
             for (int i = 1; i < verticalDistance; i++) {
                 ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX(), this.getChessboardCell().getX() + targetIsUpper * i);
-                System.out.println(currentCell.getX() + ", " + currentCell.getY());
+//                System.out.println(currentCell.getX() + ", " + currentCell.getY());
 
                 if (currentCell.isVacant() != true && currentCell.getPiece().getOwner() == this.getOwner()) {
                     return false;
