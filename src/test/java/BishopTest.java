@@ -28,4 +28,14 @@ public class BishopTest {
         Assert.assertEquals(board.getCell(3, 3), bishop.getChessboardCell());
     }
 
+    @Test
+    public void testBishopInvalidMove() {
+        bishop.willMove(board.getCell(3,1), false);
+        Assert.assertEquals(board.getCell(4,4), bishop.getChessboardCell());
+        bishop.willMove(board.getCell(4,4), false);
+        Assert.assertEquals(board.getCell(4,4), bishop.getChessboardCell());
+        bishop.willMove(board.getCell(2,2), false);
+        Assert.assertEquals(board.getCell(4,4), bishop.getChessboardCell());
+    }
+
 }

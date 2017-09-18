@@ -34,12 +34,32 @@ public class QueenTest {
         Assert.assertEquals(board.getCell(3,4), queen.getChessboardCell());
         queen.willMove(board.getCell(4,4), false);
         Assert.assertEquals(board.getCell(4,4), queen.getChessboardCell());
+        queen.willMove(board.getCell(4,3), false);
+        Assert.assertEquals(board.getCell(4,3), queen.getChessboardCell());
+        queen.willMove(board.getCell(4,4), false);
+        Assert.assertEquals(board.getCell(4,4), queen.getChessboardCell());
+        queen.willMove(board.getCell(3,4), false);
+        Assert.assertEquals(board.getCell(3,4), queen.getChessboardCell());
     }
 
     @Test
     public void testQueenCanCapture(){
         queen.willMove(board.getCell(3,3), false);
         Assert.assertEquals(board.getCell(3,3), queen.getChessboardCell());
+        queen.willMove(board.getCell(4,4), false);
+        Assert.assertEquals(board.getCell(4,4), queen.getChessboardCell());
+        queen.willMove(board.getCell(3,5), false);
+        Assert.assertEquals(board.getCell(3,5), queen.getChessboardCell());
+    }
+
+    @Test
+    public void testQueenInvalidMove() {
+        queen.willMove(board.getCell(3,1), false);
+        Assert.assertEquals(board.getCell(4,4), queen.getChessboardCell());
+        queen.willMove(board.getCell(4,4), false);
+        Assert.assertEquals(board.getCell(4,4), queen.getChessboardCell());
+        queen.willMove(board.getCell(2,2), false);
+        Assert.assertEquals(board.getCell(4,4), queen.getChessboardCell());
     }
 
 }

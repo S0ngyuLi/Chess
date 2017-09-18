@@ -98,7 +98,7 @@ public class Chessboard {
                         }
 
                         // Resume possible moves
-                        rivalPiece.willMove(currentRivalPosition, false);
+                        rivalPiece.setCell(currentRivalPosition);
                     }
                 }
             }
@@ -125,7 +125,7 @@ public class Chessboard {
                         }
 
                         // Resume possible moves
-                        rivalPiece.willMove(currentRivalPosition, false);
+                        rivalPiece.setCell(currentRivalPosition);
                     }
                 }
             }

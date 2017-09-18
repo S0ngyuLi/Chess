@@ -29,10 +29,14 @@ public abstract class Piece {
 
     public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
+        setCell(targetCell);
+        this.cell.checkCheckmate();
+    }
+
+    public void setCell(ChessboardCell targetCell) {
         this.cell.clearCell();
         this.cell = targetCell;
         targetCell.setPiece(this);
-        this.cell.checkCheckmate();
     }
 
     public void willRemoveFromBoard() {
@@ -65,7 +69,11 @@ public abstract class Piece {
 
     public ArrayList<ChessboardCell> getAllPossibleRoutes() {
         ArrayList<ChessboardCell> ret = new ArrayList<ChessboardCell>();
-        this.getChessboardCell().getChessboard().traverseCell(ret, targetCell -> {return checkViablePath(targetCell);}); // Hacky: fancy lambda expression here
+        if (this.isOnboard) {
+            this.getChessboardCell().getChessboard().traverseCell(ret, targetCell -> {
+                return this.checkViablePath(targetCell);
+            }); // Hacky: fancy lambda expression here
+        }
         return ret;
     }
 

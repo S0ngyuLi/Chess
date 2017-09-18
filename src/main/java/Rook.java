@@ -17,8 +17,8 @@ public class Rook extends Piece {
         if (targetCell.getX() == this.getChessboardCell().getX() && targetCell.getY() != this.getChessboardCell().getY()) {
             int targetIsUpper = targetCell.getY() < this.getChessboardCell().getY() ? -1 : 1;
             int verticalDistance = abs(targetCell.getY() - this.getChessboardCell().getY());
-            for (int i = 1; i < verticalDistance; i++) {
-                ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX(), this.getChessboardCell().getX() + targetIsUpper * i);
+            for (int i = 0; i < verticalDistance; i++) {
+                ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX(), this.getChessboardCell().getX() + targetIsUpper * (i+1));
                 if (currentCell.isVacant() != true && currentCell.getPiece().getOwner() == this.getOwner()) {
                     return false;
                 }
@@ -35,8 +35,8 @@ public class Rook extends Piece {
         else if (targetCell.getX() != this.getChessboardCell().getX() && targetCell.getY() == this.getChessboardCell().getY()) {
             int targetIsLeft = targetCell.getX() < this.getChessboardCell().getX() ? -1 : 1;
             int horizentalDistance = abs(targetCell.getX() - this.getChessboardCell().getX());
-            for (int i = 1; i < horizentalDistance; i++) {
-                ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX() + targetIsLeft * i, this.getChessboardCell().getX());
+            for (int i = 0; i < horizentalDistance; i++) {
+                ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX() + targetIsLeft * (i+1), this.getChessboardCell().getX());
                 if (currentCell.isVacant() != true && currentCell.getPiece().getOwner() == this.getOwner()) {
                     return false;
                 }

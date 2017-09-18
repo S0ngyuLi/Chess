@@ -20,8 +20,8 @@ public class Bishop extends Piece {
             int targetOnUpper = targetCell.getY() < this.getChessboardCell().getY() ? -1 : 1;
             int verticalDistance = abs(targetCell.getX() - this.getChessboardCell().getX());
 
-            for (int i = 1; i < verticalDistance; i++) {
-                ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX() + targetOnLeft * i, this.getChessboardCell().getY() + targetOnUpper * i);
+            for (int i = 0; i < verticalDistance; i++) {
+                ChessboardCell currentCell = this.getChessboardCell().getCell(this.getChessboardCell().getX() + targetOnLeft * (i+1), this.getChessboardCell().getY() + targetOnUpper * (i+1));
                 if (i == verticalDistance -1 && currentCell.isVacant() != true && currentCell.getPiece().getOwner() != this.getOwner()) {
                     return true;
                 }
