@@ -11,6 +11,9 @@ public class Pawn extends Piece {
     }
     private boolean isNeverMoved = true;
     public boolean checkViablePath(ChessboardCell targetCell){
+        if (targetCell == this.getChessboardCell()) {
+            return false;
+        }
         int targetCellX = targetCell.getX();
         int targetCellY = targetCell.getY();
         if (isNeverMoved) {

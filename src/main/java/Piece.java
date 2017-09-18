@@ -29,12 +29,15 @@ public abstract class Piece {
 
     public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
-        targetCell.setPiece(this);
+        this.cell.clearCell();
         this.cell = targetCell;
+        targetCell.setPiece(this);
         this.cell.checkCheckmate();
     }
 
     public void willRemoveFromBoard() {
+        this.getChessboardCell().clearCell();
+        this.cell = null;
         this.didRemoveFromBoard();
     }
 

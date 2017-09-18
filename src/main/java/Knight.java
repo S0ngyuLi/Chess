@@ -12,6 +12,9 @@ public class Knight extends Piece {
     }
 
     public boolean checkViablePath(ChessboardCell targetCell){
+        if (targetCell == this.getChessboardCell()) {
+            return false;
+        }
         int targetCellX = targetCell.getX();
         int targetCellY = targetCell.getY();
         if (targetCell.isVacant() || (targetCell.isVacant()==false && targetCell.getPiece().getOwner() != this.getOwner())) {

@@ -9,9 +9,10 @@ public class ChessboardCell {
     private int x_cord;
     private int y_cord;
     private Chessboard chessboard;
+    private boolean vacant = true;
 
     public void checkCheckmate() {
-        this.chessboard.checkCheckMate();
+//        this.chessboard.checkCheckMate();
     }
 
     public ChessboardCell(int x, int y, Chessboard board) {
@@ -29,12 +30,12 @@ public class ChessboardCell {
     }
 
     public boolean isVacant() {
-        if(this.piece == null) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return vacant;
+    }
+
+    public void clearCell(){
+        this.piece = null;
+        this.vacant = true;
     }
 
     public void setPiece(Piece newPiece){
@@ -43,6 +44,7 @@ public class ChessboardCell {
         }
         else {
             this.piece = newPiece;
+            this.vacant = false;
         }
     }
 

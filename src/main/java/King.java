@@ -13,6 +13,9 @@ public class King extends Piece {
     }
 
     public boolean checkViablePath(ChessboardCell targetCell){
+        if (targetCell == this.getChessboardCell()) {
+            return false;
+        }
         if (abs(targetCell.getX() - this.getChessboardCell().getX())<= 1 && abs(targetCell.getY() - this.getChessboardCell().getY())<= 1) {
             if(targetCell.isVacant()!=true && targetCell.getPiece().getOwner() != this.getOwner()) {
 

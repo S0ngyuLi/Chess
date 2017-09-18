@@ -48,33 +48,33 @@ public class Chessboard {
         }
 
         for (int i = 0; i < 8; i++) {
-            piecesForPlayerA.add(new Pawn(this.playerA, cells[1][i]));
-            piecesForPlayerB.add(new Pawn(this.playerB, cells[6][i]));
+            piecesForPlayerA.add(new Pawn(this.playerA, cells[i][1]));
+            piecesForPlayerB.add(new Pawn(this.playerB, cells[i][6]));
         }
 
-        this.kingForA = new King(this.playerA, cells[0][3]);
-        this.kingForB = new King(this.playerA, cells[7][3]);
+        this.kingForA = new King(this.playerA, cells[3][0]);
+        this.kingForB = new King(this.playerA, cells[3][7]);
 
         piecesForPlayerA.add(kingForA);
         piecesForPlayerB.add(kingForB);
 
-        piecesForPlayerA.add(new Queen(this.playerA, cells[0][4]));
-        piecesForPlayerB.add(new Queen(this.playerB, cells[7][4]));
+        piecesForPlayerA.add(new Queen(this.playerA, cells[4][0]));
+        piecesForPlayerB.add(new Queen(this.playerB, cells[4][7]));
 
         piecesForPlayerA.add(new Rook(this.playerA, cells[0][0]));
         piecesForPlayerA.add(new Rook(this.playerA, cells[0][7]));
         piecesForPlayerB.add(new Rook(this.playerB, cells[7][0]));
         piecesForPlayerB.add(new Rook(this.playerB, cells[7][7]));
 
-        piecesForPlayerA.add(new Knight(this.playerA, cells[0][1]));
-        piecesForPlayerA.add(new Knight(this.playerA, cells[0][6]));
-        piecesForPlayerB.add(new Knight(this.playerB, cells[7][1]));
-        piecesForPlayerB.add(new Knight(this.playerB, cells[7][6]));
+        piecesForPlayerA.add(new Knight(this.playerA, cells[1][0]));
+        piecesForPlayerA.add(new Knight(this.playerA, cells[6][0]));
+        piecesForPlayerB.add(new Knight(this.playerB, cells[1][7]));
+        piecesForPlayerB.add(new Knight(this.playerB, cells[6][7]));
 
-        piecesForPlayerA.add(new Bishop(this.playerA, cells[0][2]));
-        piecesForPlayerA.add(new Bishop(this.playerA, cells[0][5]));
-        piecesForPlayerB.add(new Bishop(this.playerB, cells[7][2]));
-        piecesForPlayerB.add(new Bishop(this.playerB, cells[7][5]));
+        piecesForPlayerA.add(new Bishop(this.playerA, cells[2][0]));
+        piecesForPlayerA.add(new Bishop(this.playerA, cells[5][0]));
+        piecesForPlayerB.add(new Bishop(this.playerB, cells[2][7]));
+        piecesForPlayerB.add(new Bishop(this.playerB, cells[5][7]));
     }
 
     // Function evaluates to true if A checkmates B
