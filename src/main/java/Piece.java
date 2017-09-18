@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by songyuli on 9/17/17.
  *
@@ -50,6 +53,17 @@ public abstract class Piece {
 
     public Player getOwner() {
         return this.owner;
+    }
+
+    /*
+     *  Use brute force to traverse all cells, and find all possible movements of piece.
+     *  Should be overridden to a more efficient implementation in substantial classes
+     * */
+
+    public ArrayList<ChessboardCell> getAllPossibleRoutes() {
+        ArrayList<ChessboardCell> ret = new ArrayList<ChessboardCell>();
+        this.getChessboardCell().getChessboard().traverseCell(ret, targetCell -> {return checkViablePath(targetCell);}); // Hacky: fancy lambda expression here
+        return ret;
     }
 
     public abstract boolean checkViablePath(ChessboardCell targetCell);

@@ -28,6 +28,10 @@ public class King extends Piece {
         return false;
     }
 
+    /*
+     * Override the function in abstract class for performance
+     */
+
     public ArrayList<ChessboardCell> getAllPossibleRoutes() {
         ArrayList<ChessboardCell> ret = new ArrayList<ChessboardCell>();
         Chessboard board = this.getChessboardCell().getChessboard();

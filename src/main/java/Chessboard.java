@@ -4,6 +4,7 @@
  * Chessboard object, which hold chessboard cells as composition, as well as player information
  *
  */
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -98,5 +99,15 @@ public class Chessboard {
     public void capturePieces(ChessboardCell targetCell) {
         box.add(targetCell.getPiece());
         targetCell.getPiece().willRemoveFromBoard();
+    }
+
+    public void traverseCell(ArrayList<ChessboardCell> ret, Command command) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (command.checkViableRoute(this.cells[i][j])) {
+                    ret.add(cells[i][j]);
+                }
+            }
+        }
     }
 }
