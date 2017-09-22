@@ -12,7 +12,7 @@ public class ChessboardCell {
     private boolean vacant = true;
 
     public void checkCheckmate() {
-//        this.chessboard.checkCheckMate();
+        this.chessboard.checkCheckMate();
     }
 
     public ChessboardCell(int x, int y, Chessboard board) {

@@ -9,6 +9,12 @@ public class AppDelegate {
     private Player playerA;
     private Player playerB;
 
+    public AppDelegate(Player playerA, Player playerB, Chessboard board) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        this.board = board;
+    }
+
     public AppDelegate(String nameA, String nameB) {
         this.playerA = new Player(nameA);
         this.playerB = new Player(nameB);

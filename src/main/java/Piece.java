@@ -11,17 +11,28 @@ public abstract class Piece {
     private Player owner;
     private ChessboardCell cell;
 
+    private ChessboardCell lastLocation;
+    private Piece lastPieceCaptured;
+
     public Piece(Player player, ChessboardCell cell) {
         this.owner = player;
         cell.setPiece(this);
         this.cell = cell;
         this.isOnboard = true;
+
+        this.lastLocation = null;
+        this.lastPieceCaptured = null;
     }
 
     public void willMove(ChessboardCell targetCell, boolean animated) {
         if(this.checkViablePath(targetCell)) {
+            this.lastLocation = this.getChessboardCell();
             if (targetCell.isVacant() != true) {
+                this.lastPieceCaptured = targetCell.getPiece();
                 this.getChessboardCell().getChessboard().capturePieces(targetCell);
+            }
+            else {
+                this.lastPieceCaptured = null;
             }
             this.didMove(targetCell, animated);
         }
@@ -30,10 +41,27 @@ public abstract class Piece {
     public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
         setCell(targetCell);
-        this.cell.checkCheckmate();
+        if (animated == true) {
+            this.cell.checkCheckmate();
+        }
+    }
+    /*
+     * resume last step. Should only be used immediately after a move to verify checkmate
+     */
+    public void resume() {
+        ChessboardCell currLocation = this.getChessboardCell();
+        if(lastLocation != null) {
+            setCell(lastLocation);
+            lastLocation = null;
+        }
+        if(lastPieceCaptured != null) {
+            currLocation.setPiece(lastPieceCaptured);
+            lastPieceCaptured.setCell(currLocation);
+            lastPieceCaptured = null;
+        }
     }
 
-    public void setCell(ChessboardCell targetCell) {
+    private void setCell(ChessboardCell targetCell) {
         this.cell.clearCell();
         this.cell = targetCell;
         targetCell.setPiece(this);

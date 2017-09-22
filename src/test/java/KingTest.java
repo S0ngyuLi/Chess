@@ -23,8 +23,9 @@ public class KingTest {
 
     @Test
     public void testKingCanMoveDiagonally(){
-        pawn.willMove(board.getCell(3,4), false);
-        king.willMove(board.getCell(3,3), false);
+        board.debugPrint();
+        pawn.willMove(board.getCell(3,2), true);
+        king.willMove(board.getCell(3,3), true);
         Assert.assertEquals(board.getCell(3,3), king.getChessboardCell());
     }
 

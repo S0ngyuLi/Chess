@@ -8,8 +8,9 @@ import static java.lang.Math.abs;
 public class Pawn extends Piece {
     public Pawn(Player player, ChessboardCell cell) {
         super(player, cell);
+        this.isNeverMoved = true;
     }
-    private boolean isNeverMoved = true;
+    private boolean isNeverMoved;
     public boolean checkViablePath(ChessboardCell targetCell){
         if (targetCell == this.getChessboardCell()) {
             return false;
@@ -17,7 +18,6 @@ public class Pawn extends Piece {
         int targetCellX = targetCell.getX();
         int targetCellY = targetCell.getY();
         if (isNeverMoved) {
-            this.isNeverMoved = false;
             if (targetCellX == this.getChessboardCell().getX() && abs(targetCellY - this.getChessboardCell().getY()) == 2 && targetCell.isVacant()) {
                 return true;
             }
@@ -26,12 +26,21 @@ public class Pawn extends Piece {
             return true;
         }
         if(this.getOwner() == this.getChessboardCell().getChessboard().getPlayerA() && targetCell.isVacant()!= true && targetCell.getPiece().getOwner()!= this.getOwner() && abs(targetCellX - this.getChessboardCell().getX()) == 1 && targetCellY == this.getChessboardCell().getY() + 1) {
+
             return true;
         }
 
         if(this.getOwner() == this.getChessboardCell().getChessboard().getPlayerB() && targetCell.isVacant()!=true && targetCell.getPiece().getOwner()!= this.getOwner() && abs(targetCellX - this.getChessboardCell().getX()) == 1 && targetCellY == this.getChessboardCell().getY() - 1) {
+
             return true;
         }
         return false;
+    }
+
+    public void didMove(ChessboardCell targetCell, boolean animated) {
+        super.didMove(targetCell, animated);
+        if (animated == true) {
+            isNeverMoved = false;
+        }
     }
 }

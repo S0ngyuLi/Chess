@@ -28,7 +28,7 @@ public class Chessboard {
 
     private Player playerA; // Upper side player
     private Player playerB; // Lower side player
-    private AppDelegate appDelegate;
+    public AppDelegate appDelegate;
 
     public Chessboard(Player playerA, Player playerB, AppDelegate delegate){
         this.cells = new ChessboardCell[8][8];
@@ -53,7 +53,7 @@ public class Chessboard {
         }
 
         this.kingForA = new King(this.playerA, cells[3][0]);
-        this.kingForB = new King(this.playerA, cells[3][7]);
+        this.kingForB = new King(this.playerB, cells[3][7]);
 
         piecesForPlayerA.add(kingForA);
         piecesForPlayerB.add(kingForB);
@@ -62,8 +62,8 @@ public class Chessboard {
         piecesForPlayerB.add(new Queen(this.playerB, cells[4][7]));
 
         piecesForPlayerA.add(new Rook(this.playerA, cells[0][0]));
-        piecesForPlayerA.add(new Rook(this.playerA, cells[0][7]));
-        piecesForPlayerB.add(new Rook(this.playerB, cells[7][0]));
+        piecesForPlayerA.add(new Rook(this.playerA, cells[7][0]));
+        piecesForPlayerB.add(new Rook(this.playerB, cells[0][7]));
         piecesForPlayerB.add(new Rook(this.playerB, cells[7][7]));
 
         piecesForPlayerA.add(new Knight(this.playerA, cells[1][0]));
@@ -79,6 +79,26 @@ public class Chessboard {
 
     // Function evaluates to true if A checkmates B
 
+    private boolean isBInCheck() {
+        for (Piece piece: this.piecesForPlayerA) {
+            ArrayList<ChessboardCell> possibleRoutesA = piece.getAllPossibleRoutes();
+            if (possibleRoutesA.contains(kingForB.getChessboardCell())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAInCheck() {
+        for (Piece piece: this.piecesForPlayerB) {
+            ArrayList<ChessboardCell> possibleRoutesB = piece.getAllPossibleRoutes();
+            if (possibleRoutesB.contains(kingForA.getChessboardCell())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean checkCheckMateForA() {
         for (Piece piece: this.piecesForPlayerA) {
             ArrayList<ChessboardCell> possibleRoutesA = piece.getAllPossibleRoutes();
@@ -87,20 +107,18 @@ public class Chessboard {
                     ArrayList<ChessboardCell> possibleRoutesB = rivalPiece.getAllPossibleRoutes();
                     for (ChessboardCell possibleMove: possibleRoutesB) {
                         // Assume possible moves
-                        ChessboardCell currentRivalPosition = rivalPiece.getChessboardCell();
                         rivalPiece.willMove(possibleMove, false);
 
-                        for (Piece assumedPiece: this.piecesForPlayerA) {
-                            ArrayList<ChessboardCell> assumedPossibleRoutesA = assumedPiece.getAllPossibleRoutes();
-                            if (assumedPossibleRoutesA.contains(kingForB.getChessboardCell())) {
-                                return true;
-                            }
+                        if(isBInCheck()) {
+                            rivalPiece.resume();
+                            return true;
                         }
+                        rivalPiece.resume();
 
                         // Resume possible moves
-                        rivalPiece.setCell(currentRivalPosition);
                     }
                 }
+
             }
         }
         return false;
@@ -114,18 +132,13 @@ public class Chessboard {
                     ArrayList<ChessboardCell> possibleRoutesA = rivalPiece.getAllPossibleRoutes();
                     for (ChessboardCell possibleMove: possibleRoutesB) {
                         // Assume possible moves
-                        ChessboardCell currentRivalPosition = rivalPiece.getChessboardCell();
                         rivalPiece.willMove(possibleMove, false);
 
-                        for (Piece assumedPiece: this.piecesForPlayerB) {
-                            ArrayList<ChessboardCell> assumedPossibleRoutesB = assumedPiece.getAllPossibleRoutes();
-                            if (assumedPossibleRoutesB.contains(kingForA.getChessboardCell())) {
-                                return true;
-                            }
+                        if(isAInCheck()) {
+                            rivalPiece.resume();
+                            return true;
                         }
-
-                        // Resume possible moves
-                        rivalPiece.setCell(currentRivalPosition);
+                        rivalPiece.resume();
                     }
                 }
             }
@@ -135,11 +148,11 @@ public class Chessboard {
 
     public void checkCheckMate() {
         if (checkCheckMateForA()) {
-            appDelegate.endWithWinner(playerB);
+            appDelegate.endWithWinner(playerA);
             return;
         }
         if (checkCheckMateForB()) {
-            appDelegate.endWithWinner(playerA);
+            appDelegate.endWithWinner(playerB);
             return;
         }
     }
@@ -176,5 +189,47 @@ public class Chessboard {
                 }
             }
         }
+    }
+    /*
+     * Print the internal state of a chessboard. Pieces are represented by char. Uppercase = PlayerA, lowercase = Player B
+     */
+    public void debugPrint() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                String pieceKind = "";
+                if (cells[i][j].isVacant()) {
+                    pieceKind = " ";
+                }
+                else {
+                    Piece piece = cells[i][j].getPiece();
+                    if (piece instanceof Bishop) {
+                        pieceKind = "B";
+                    }
+                    else if (piece instanceof King) {
+                        pieceKind = "K";
+                    }
+                    else if (piece instanceof Knight) {
+                        pieceKind = "N";
+                    }
+                    else if (piece instanceof Pawn) {
+                        pieceKind = "P";
+                    }
+                    else if (piece instanceof Queen) {
+                        pieceKind = "Q";
+                    }
+                    else if (piece instanceof Rook) {
+                        pieceKind = "R";
+                    }
+
+                    if (piece.getOwner() == playerB) {
+                        pieceKind = pieceKind.toLowerCase();
+                    }
+
+                }
+                System.out.print(" " + pieceKind + " ");
+            }
+            System.out.print("\n");
+        }
+        System.out.println("=======================\n");
     }
 }

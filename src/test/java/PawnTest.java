@@ -27,8 +27,8 @@ public class PawnTest {
 
     @Test
     public void testPawnCannotMakeTwoStepsAfterInitialMoving() {
-        testingPawn.willMove(board.getCell(4,3), false);
-        testingPawn.willMove(board.getCell(4,5), false);
+        testingPawn.willMove(board.getCell(4,3), true);
+        testingPawn.willMove(board.getCell(4,5), true);
         Assert.assertEquals(board.getCell(4,3), testingPawn.getChessboardCell());
     }
 
