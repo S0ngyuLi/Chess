@@ -220,7 +220,12 @@ public class Chessboard {
                     else if (piece instanceof Rook) {
                         pieceKind = "R";
                     }
-
+                    else if (piece instanceof Advisor) {
+                        pieceKind = "A";
+                    }
+                    else if (piece instanceof Princess) {
+                        pieceKind = "C";
+                    }
                     if (piece.getOwner() == playerB) {
                         pieceKind = pieceKind.toLowerCase();
                     }
