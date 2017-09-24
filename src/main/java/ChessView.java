@@ -10,13 +10,12 @@ public class ChessView {
     public ChessView(ChessboardModel board){
         this.board = board;
         JFrame window = new JFrame("Basic Application Example");
-        window.setSize(tileDimension * 8, tileDimension * 8);
+        window.setSize(tileDimension * 8 + 4, tileDimension * 9);
         JPanel mainPanel = initializePanel();
-
         setUpTiles(mainPanel);
-
         window.setContentPane(mainPanel);
         window.setVisible(true);
+        window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
