@@ -8,14 +8,14 @@ import org.junit.Test;
 public class QueenTest {
     Player playerA;
     Player playerB;
-    Chessboard board;
+    ChessboardModel board;
     Piece queen;
     Piece pawn;
     @Before
     public void setEnvironment() {
         playerA = new Player("A");
         playerB = new Player("B");
-        board = new Chessboard(playerA, playerB, null);
+        board = new ChessboardModel(playerA, playerB, null);
         board.initializeBoard();
         queen = new Queen(this.playerA, board.getCell(4,4));
         pawn = new Pawn(this.playerB, board.getCell(3,3));

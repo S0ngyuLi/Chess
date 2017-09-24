@@ -37,7 +37,7 @@ public class King extends Piece {
 
     public ArrayList<ChessboardCell> getAllPossibleRoutes() {
         ArrayList<ChessboardCell> ret = new ArrayList<ChessboardCell>();
-        Chessboard board = this.getChessboardCell().getChessboard();
+        ChessboardModel board = this.getChessboardCell().getChessboardModel();
         int x = this.getChessboardCell().getX();
         int y = this.getChessboardCell().getY();
         if (board.getCell(x-1, y-1) != null && this.checkViablePath(board.getCell(x-1, y-1))) {

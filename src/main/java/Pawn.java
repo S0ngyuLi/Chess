@@ -22,15 +22,15 @@ public class Pawn extends Piece {
                 return true;
             }
         }
-        if (targetCellX == this.getChessboardCell().getX() && targetCell.isVacant() && ((this.getOwner() == this.getChessboardCell().getChessboard().getPlayerA() && targetCellY == this.getChessboardCell().getY() + 1) || (this.getOwner() == this.getChessboardCell().getChessboard().getPlayerB() && targetCellY == this.getChessboardCell().getY() - 1))) {
+        if (targetCellX == this.getChessboardCell().getX() && targetCell.isVacant() && ((this.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerA() && targetCellY == this.getChessboardCell().getY() + 1) || (this.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerB() && targetCellY == this.getChessboardCell().getY() - 1))) {
             return true;
         }
-        if(this.getOwner() == this.getChessboardCell().getChessboard().getPlayerA() && targetCell.isVacant()!= true && targetCell.getPiece().getOwner()!= this.getOwner() && abs(targetCellX - this.getChessboardCell().getX()) == 1 && targetCellY == this.getChessboardCell().getY() + 1) {
+        if(this.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerA() && targetCell.isVacant()!= true && targetCell.getPiece().getOwner()!= this.getOwner() && abs(targetCellX - this.getChessboardCell().getX()) == 1 && targetCellY == this.getChessboardCell().getY() + 1) {
 
             return true;
         }
 
-        if(this.getOwner() == this.getChessboardCell().getChessboard().getPlayerB() && targetCell.isVacant()!=true && targetCell.getPiece().getOwner()!= this.getOwner() && abs(targetCellX - this.getChessboardCell().getX()) == 1 && targetCellY == this.getChessboardCell().getY() - 1) {
+        if(this.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerB() && targetCell.isVacant()!=true && targetCell.getPiece().getOwner()!= this.getOwner() && abs(targetCellX - this.getChessboardCell().getX()) == 1 && targetCellY == this.getChessboardCell().getY() - 1) {
 
             return true;
         }

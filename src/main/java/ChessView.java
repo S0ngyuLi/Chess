@@ -5,12 +5,12 @@ import java.awt.*;
  * Created by songyuli on 9/24/17.
  */
 public class ChessView {
-    public static void main(String[] args) {
-        new ChessView();
-    }
-    public ChessView(){
+    private ChessboardModel board;
+    private int tileDimension = 50;
+    public ChessView(ChessboardModel board){
+        this.board = board;
         JFrame window = new JFrame("Basic Application Example");
-        window.setSize(800, 800);
+        window.setSize(tileDimension * 8, tileDimension * 8);
         JPanel mainPanel = initializePanel();
 
         setUpTiles(mainPanel);
@@ -21,28 +21,20 @@ public class ChessView {
     }
 
     private void setUpTiles(JPanel panel) {
-        JComponent[] data = new JComponent[64];
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                int index = i * 8 + j;
-                data[index] = new JPanel();
-                data[index].setPreferredSize(new Dimension(100,100));
-                data[index].setBackground((i+j) % 2 == 0? Color.black : Color.white);
-                data[index].setLayout(new BorderLayout());
-            }
-        }
-        JList<JComponent> myList = new JList<JComponent>(data);
+        JList<JPanel> myList = new JList<JPanel>(this.board);
         JScrollPane listScroller = new JScrollPane(myList);
-        listScroller.setPreferredSize(new Dimension(800, 800));
+        listScroller.setPreferredSize(new Dimension(tileDimension * 8, tileDimension * 8));
         myList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        myList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         myList.setVisibleRowCount(8);
-        myList.setCellRenderer(new TileRender());
+        myList.setCellRenderer(new TileRender(this.board));
+        myList.addMouseListener(new BoardMouseAdapter(this.board));
         panel.add(listScroller);
     }
 
     private JPanel initializePanel() {
         JPanel myPanel = new JPanel();
-        myPanel.setPreferredSize(new Dimension(800,800));
+        myPanel.setPreferredSize(new Dimension(tileDimension * 8, tileDimension * 8));
         myPanel.setLayout(new BorderLayout());
         return myPanel;
     }

@@ -8,7 +8,7 @@ public class Advisor extends Bishop {
         super(player, cell);
     }
     public boolean checkViablePath(ChessboardCell targetCell){
-        if (this.getOwner() == this.getChessboardCell().getChessboard().getPlayerA()) {
+        if (this.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerA()) {
             if (targetCell.getY() >= 4) {
                 return false;
             }

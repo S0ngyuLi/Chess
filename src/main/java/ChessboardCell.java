@@ -1,25 +1,37 @@
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Created by songyuli on 9/17/17.
  *
- * Chessboard Cell object, which is composition of chessboard
+ * ChessboardModel Cell object, which is composition of chessboardModel
  *
  */
-public class ChessboardCell {
+public class ChessboardCell extends JPanel {
     private Piece piece;
     private int x_cord;
     private int y_cord;
-    private Chessboard chessboard;
+    private ChessboardModel chessboardModel;
     private boolean vacant = true;
 
+    private String symbol;
+
     public void checkCheckmate() {
-        this.chessboard.checkCheckMate();
+        this.chessboardModel.checkCheckMate();
     }
 
-    public ChessboardCell(int x, int y, Chessboard board) {
+    public ChessboardCell(int x, int y, ChessboardModel board) {
+        super();
         this.x_cord = x;
         this.y_cord = y;
-        this.chessboard = board;
+        this.chessboardModel = board;
         this.piece = null;
+
+        this.symbol = "";
+    }
+
+    public String getSymbol() {
+        return this.symbol;
     }
 
     public int getX() {
@@ -36,6 +48,15 @@ public class ChessboardCell {
     public void clearCell(){
         this.piece = null;
         this.vacant = true;
+        updateSymbol();
+    }
+
+    public void updateLabel() {
+        super.removeAll();
+        JLabel label = new JLabel(symbol, SwingConstants.CENTER);
+        label.setFont(new Font("Serif", Font.BOLD, 25));
+        label.setForeground(Color.black);
+        super.add(label);
     }
 
     public void setPiece(Piece newPiece){
@@ -45,6 +66,62 @@ public class ChessboardCell {
         else {
             this.piece = newPiece;
             this.vacant = false;
+            updateSymbol();
+        }
+    }
+
+    private void updateSymbol() {
+        if (this.isVacant()) {
+            symbol = "";
+            return;
+        }
+        if (this.piece instanceof Pawn) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♙";
+            }
+            else {
+                symbol = "♟";
+            }
+        }
+        if (this.piece instanceof Rook) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♖";
+            }
+            else {
+                symbol = "♜";
+            }
+        }
+        if (this.piece instanceof Knight) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♘";
+            }
+            else {
+                symbol = "♞";
+            }
+        }
+        if (this.piece instanceof Bishop) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♗";
+            }
+            else {
+                symbol = "♝";
+            }
+        }
+        if (this.piece instanceof Queen) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♕";
+            }
+            else {
+                symbol = "♛";
+            }
+        }
+        if (this.piece instanceof King) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♔";
+            }
+            else {
+                symbol = "♚";
+            }
         }
     }
 
@@ -53,9 +130,9 @@ public class ChessboardCell {
     }
 
     public ChessboardCell getCell(int x, int y) {
-        return chessboard.getCell(x, y);
+        return chessboardModel.getCell(x, y);
     }
-    public Chessboard getChessboard() {
-        return this.chessboard;
+    public ChessboardModel getChessboardModel() {
+        return this.chessboardModel;
     }
 }

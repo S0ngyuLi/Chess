@@ -1,15 +1,19 @@
 /**
  * Created by songyuli on 9/17/17.
  *
- * Chessboard object, which hold chessboard cells as composition, as well as player information
+ * ChessboardModel object, which hold chessboard cells as composition, as well as player information
  *
  */
+import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class Chessboard {
+public class ChessboardModel implements ListModel<JPanel> {
     private ChessboardCell [][] cells;
     private HashSet<Piece> box; // A box of pieces that have been captured
     private King kingForA;
@@ -28,9 +32,11 @@ public class Chessboard {
 
     private Player playerA; // Upper side player
     private Player playerB; // Lower side player
+    private ArrayList<ListDataListener> listeners;
+
     public AppDelegate appDelegate;
 
-    public Chessboard(Player playerA, Player playerB, AppDelegate delegate){
+    public ChessboardModel(Player playerA, Player playerB, AppDelegate delegate){
         this.cells = new ChessboardCell[8][8];
         this.playerA = playerA;
         this.playerB = playerB;
@@ -38,14 +44,43 @@ public class Chessboard {
         this.box = new HashSet<Piece>();
         this.piecesForPlayerA = new HashSet<>();
         this.piecesForPlayerB = new HashSet<>();
-    }
+        this.listeners = new ArrayList<ListDataListener>();
 
-    public void initializeBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 cells[i][j] = new ChessboardCell(i, j, this);
+                cells[i][j].setPreferredSize(new Dimension(50, 50));
+                cells[i][j].setBackground((i+j) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226)); // Black : white
+                cells[i][j].setLayout(new BorderLayout());
             }
         }
+    }
+
+    public void addListDataListener(ListDataListener l) {
+        listeners.add(l);
+    }
+
+    public void removeListDataListener(ListDataListener l) {
+        listeners.remove(l);
+    }
+
+    public void notifyContentChanged() {
+        for (ListDataListener listener : listeners) {
+            listener.contentsChanged(new ListDataEvent(this, 0, 0, getSize() - 1));
+        }
+    }
+
+    public JPanel getElementAt(int index) {
+        int i = index / 8;
+        int j = index % 8;
+        return this.getCell(i, j);
+    }
+
+    public int getSize(){
+        return 64;
+    }
+
+    public void initializeBoard() {
 
         for (int i = 0; i < 8; i++) {
             piecesForPlayerA.add(new Pawn(this.playerA, cells[i][1]));

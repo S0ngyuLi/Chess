@@ -9,14 +9,14 @@ public class RegressionTest {
     AppDelegate delegate;
     Player playerA;
     Player playerB;
-    Chessboard board;
+    ChessboardModel board;
     Piece king;
     Piece pawn;
     @Before
     public void setEnvironment() {
         playerA = new Player("A");
         playerB = new Player("B");
-        board = new Chessboard(playerA, playerB, null);
+        board = new ChessboardModel(playerA, playerB, null);
         delegate = new AppDelegate(playerA, playerB, board);
         board.appDelegate = delegate;
         board.initializeBoard();

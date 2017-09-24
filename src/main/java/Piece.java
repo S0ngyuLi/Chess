@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +28,7 @@ public abstract class Piece {
             this.lastLocation = this.getChessboardCell();
             if (targetCell.isVacant() != true) {
                 this.lastPieceCaptured = targetCell.getPiece();
-                this.getChessboardCell().getChessboard().capturePieces(targetCell);
+                this.getChessboardCell().getChessboardModel().capturePieces(targetCell);
             }
             else {
                 this.lastPieceCaptured = null;
@@ -65,6 +64,7 @@ public abstract class Piece {
         this.cell.clearCell();
         this.cell = targetCell;
         targetCell.setPiece(this);
+        this.cell.getChessboardModel().notifyContentChanged();
     }
 
     public void willRemoveFromBoard() {
@@ -98,7 +98,7 @@ public abstract class Piece {
     public ArrayList<ChessboardCell> getAllPossibleRoutes() {
         ArrayList<ChessboardCell> ret = new ArrayList<ChessboardCell>();
         if (this.isOnboard) {
-            this.getChessboardCell().getChessboard().traverseCell(ret, targetCell -> {
+            this.getChessboardCell().getChessboardModel().traverseCell(ret, targetCell -> {
                 return this.checkViablePath(targetCell);
             }); // Hacky: fancy lambda expression here
         }
