@@ -36,8 +36,6 @@ public class RegressionTest {
         Piece p4 = board.getCell(4,7).getPiece();
         p4.willMove(board.getCell(0,3),true);
 
-        board.debugPrint();
-
         Assert.assertEquals(0, playerA.getScore());
         Assert.assertEquals(1, playerB.getScore());
     }

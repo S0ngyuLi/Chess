@@ -123,6 +123,22 @@ public class ChessboardCell extends JPanel {
                 symbol = "♚";
             }
         }
+        if (this.piece instanceof Princess) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "♤";
+            }
+            else {
+                symbol = "♠";
+            }
+        }
+        if (this.piece instanceof Advisor) {
+            if(this.piece.getOwner() == this.chessboardModel.getPlayerA()) {
+                symbol = "⚐";
+            }
+            else {
+                symbol = "⚑";
+            }
+        }
     }
 
     public Piece getPiece(){

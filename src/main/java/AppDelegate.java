@@ -26,6 +26,7 @@ public class AppDelegate {
         ChessView mainView = new ChessView(this.board);
         // TODO: Waiting for input
     }
+
     public void endWithWinner(Player player){
         player.win();
     }

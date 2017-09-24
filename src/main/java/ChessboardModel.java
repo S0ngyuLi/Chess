@@ -49,7 +49,7 @@ public class ChessboardModel implements ListModel<JPanel> {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 cells[i][j] = new ChessboardCell(i, j, this);
-                cells[i][j].setPreferredSize(new Dimension(50, 50));
+                cells[i][j].setPreferredSize(new Dimension(ChessView.tileDimension, ChessView.tileDimension));
                 cells[i][j].setBackground((i+j) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226)); // Black : white
                 cells[i][j].setLayout(new BorderLayout());
             }
@@ -83,6 +83,15 @@ public class ChessboardModel implements ListModel<JPanel> {
     public void initializeBoard() {
 
         for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                cells[i][j] = new ChessboardCell(i, j, this);
+                cells[i][j].setPreferredSize(new Dimension(ChessView.tileDimension, ChessView.tileDimension));
+                cells[i][j].setBackground((i+j) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226)); // Black : white
+                cells[i][j].setLayout(new BorderLayout());
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
             piecesForPlayerA.add(new Pawn(this.playerA, cells[i][1]));
             piecesForPlayerB.add(new Pawn(this.playerB, cells[i][6]));
         }
@@ -110,6 +119,51 @@ public class ChessboardModel implements ListModel<JPanel> {
         piecesForPlayerA.add(new Bishop(this.playerA, cells[5][0]));
         piecesForPlayerB.add(new Bishop(this.playerB, cells[2][7]));
         piecesForPlayerB.add(new Bishop(this.playerB, cells[5][7]));
+
+        this.notifyContentChanged();
+    }
+
+    public void initializeFairyBoard() {
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                cells[i][j] = new ChessboardCell(i, j, this);
+                cells[i][j].setPreferredSize(new Dimension(ChessView.tileDimension, ChessView.tileDimension));
+                cells[i][j].setBackground((i+j) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226)); // Black : white
+                cells[i][j].setLayout(new BorderLayout());
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
+            piecesForPlayerA.add(new Pawn(this.playerA, cells[i][1]));
+            piecesForPlayerB.add(new Pawn(this.playerB, cells[i][6]));
+        }
+
+        this.kingForA = new King(this.playerA, cells[3][0]);
+        this.kingForB = new King(this.playerB, cells[3][7]);
+
+        piecesForPlayerA.add(kingForA);
+        piecesForPlayerB.add(kingForB);
+
+        piecesForPlayerA.add(new Queen(this.playerA, cells[4][0]));
+        piecesForPlayerB.add(new Queen(this.playerB, cells[4][7]));
+
+        piecesForPlayerA.add(new Rook(this.playerA, cells[0][0]));
+        piecesForPlayerA.add(new Rook(this.playerA, cells[7][0]));
+        piecesForPlayerB.add(new Rook(this.playerB, cells[0][7]));
+        piecesForPlayerB.add(new Rook(this.playerB, cells[7][7]));
+
+        piecesForPlayerA.add(new Princess(this.playerA, cells[1][0]));
+        piecesForPlayerA.add(new Princess(this.playerA, cells[6][0]));
+        piecesForPlayerB.add(new Princess(this.playerB, cells[1][7]));
+        piecesForPlayerB.add(new Princess(this.playerB, cells[6][7]));
+
+        piecesForPlayerA.add(new Advisor(this.playerA, cells[2][0]));
+        piecesForPlayerA.add(new Advisor(this.playerA, cells[5][0]));
+        piecesForPlayerB.add(new Advisor(this.playerB, cells[2][7]));
+        piecesForPlayerB.add(new Advisor(this.playerB, cells[5][7]));
+
+        this.notifyContentChanged();
     }
 
     // Function evaluates to true if A checkmates B
