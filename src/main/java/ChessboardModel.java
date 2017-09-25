@@ -56,38 +56,54 @@ public class ChessboardModel implements ListModel<JPanel> {
         }
     }
 
+    /*
+        Implements for ListModel
+    */
     public void addListDataListener(ListDataListener l) {
         listeners.add(l);
     }
 
+    /*
+        Implements for ListModel
+    */
     public void removeListDataListener(ListDataListener l) {
         listeners.remove(l);
     }
 
+    /*
+        Implements for ListModel
+    */
     public void notifyContentChanged() {
         for (ListDataListener listener : listeners) {
             listener.contentsChanged(new ListDataEvent(this, 0, 0, getSize() - 1));
         }
     }
 
+    /*
+        Implements for ListModel
+    */
     public JPanel getElementAt(int index) {
         int i = index / 8;
         int j = index % 8;
         return this.getCell(i, j);
     }
-
+    /*
+        Getter for size variable.
+     */
     public int getSize(){
         return 64;
     }
 
+    /*
+        Initialize a board with all conventional pieces
+     */
     public void initializeBoard() {
-
+        this.box = new HashSet<Piece>();
+        this.piecesForPlayerA = new HashSet<>();
+        this.piecesForPlayerB = new HashSet<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                cells[i][j] = new ChessboardCell(i, j, this);
-                cells[i][j].setPreferredSize(new Dimension(ChessView.tileDimension, ChessView.tileDimension));
-                cells[i][j].setBackground((i+j) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226)); // Black : white
-                cells[i][j].setLayout(new BorderLayout());
+                cells[i][j].clearCell();
             }
         }
 
@@ -123,8 +139,14 @@ public class ChessboardModel implements ListModel<JPanel> {
         this.notifyContentChanged();
     }
 
-    public void initializeFairyBoard() {
+    /*
+        Initialize a board with Advisors replaceing Bishops and Princesses replacing Knights.
+     */
 
+    public void initializeFairyBoard() {
+        this.box = new HashSet<Piece>();
+        this.piecesForPlayerA = new HashSet<>();
+        this.piecesForPlayerB = new HashSet<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 cells[i][j] = new ChessboardCell(i, j, this);
@@ -166,8 +188,9 @@ public class ChessboardModel implements ListModel<JPanel> {
         this.notifyContentChanged();
     }
 
-    // Function evaluates to true if A checkmates B
-
+    /*
+        Evaluates to true if B is in check
+     */
     private boolean isBInCheck() {
         for (Piece piece: this.piecesForPlayerA) {
             ArrayList<ChessboardCell> possibleRoutesA = piece.getAllPossibleRoutes();
@@ -178,6 +201,9 @@ public class ChessboardModel implements ListModel<JPanel> {
         return false;
     }
 
+    /*
+        Evaluates to true if A is in check
+     */
     private boolean isAInCheck() {
         for (Piece piece: this.piecesForPlayerB) {
             ArrayList<ChessboardCell> possibleRoutesB = piece.getAllPossibleRoutes();
@@ -188,6 +214,9 @@ public class ChessboardModel implements ListModel<JPanel> {
         return false;
     }
 
+    /*
+        Check if A is about to win
+    */
     private boolean checkCheckMateForA() {
         for (Piece piece: this.piecesForPlayerA) {
             ArrayList<ChessboardCell> possibleRoutesA = piece.getAllPossibleRoutes();
@@ -212,7 +241,9 @@ public class ChessboardModel implements ListModel<JPanel> {
         }
         return false;
     }
-
+    /*
+        Check if B is about to win
+     */
     private boolean checkCheckMateForB() {
         for (Piece piece: this.piecesForPlayerB) {
             ArrayList<ChessboardCell> possibleRoutesB = piece.getAllPossibleRoutes();
@@ -234,13 +265,15 @@ public class ChessboardModel implements ListModel<JPanel> {
         }
         return false;
     }
-
+    /*
+        Check if there is a checkmate on the board.
+     */
     public void checkCheckMate() {
         if (checkCheckMateForA()) {
             appDelegate.endWithWinner(playerA);
             return;
         }
-        if (checkCheckMateForB()) {
+        else if (checkCheckMateForB()) {
             appDelegate.endWithWinner(playerB);
             return;
         }
@@ -269,7 +302,10 @@ public class ChessboardModel implements ListModel<JPanel> {
         box.add(targetCell.getPiece());
         targetCell.getPiece().willRemoveFromBoard();
     }
-
+    /*
+     * Apply command at each tile on the board.
+     * Command should be a lambda expression.
+     */
     public void traverseCell(ArrayList<ChessboardCell> ret, Command command) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {

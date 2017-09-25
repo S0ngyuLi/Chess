@@ -4,6 +4,9 @@ import java.awt.event.MouseEvent;
 
 /**
  * Created by songyuli on 9/24/17.
+ *
+ * Controller for ChessView. Manages the behavior when a click is detected over the chessboard.
+ *
  */
 class BoardMouseAdapter extends MouseAdapter {
     private ChessboardModel board;
@@ -14,7 +17,9 @@ class BoardMouseAdapter extends MouseAdapter {
         this.board = board;
         this.selectedPiece = null;
     }
-
+    /*
+    Detect mouse click event for tiles on the board. It does not handle any other mouse activities.
+     */
     public void mouseClicked(MouseEvent mouseEvent) {
         JList list = (JList) mouseEvent.getSource();
         int index = list.locationToIndex(mouseEvent.getPoint());
@@ -22,16 +27,16 @@ class BoardMouseAdapter extends MouseAdapter {
         int j = index % 8;
         if (index >= 0) {
             if (this.selectedPiece == null) {
-                System.out.println("Selected: " + i + ", " + j);
                 if (board.getCell(i, j).isVacant()) {
                     return; // Return if selected cell is vacant
                 }
                 else {
                     selectedPiece = board.getCell(i, j).getPiece();
+                    board.getCell(i, j).select();
                 }
             }
             else {
-                System.out.println("Attempted to move to: " + i + ", " + j);
+                this.selectedPiece.getChessboardCell().deselect();
                 this.selectedPiece.willMove(board.getCell(i, j), true);
                 this.selectedPiece = null;
             }

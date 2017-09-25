@@ -16,41 +16,78 @@ public class ChessboardCell extends JPanel {
 
     private String symbol;
 
-    public void checkCheckmate() {
-        this.chessboardModel.checkCheckMate();
-    }
-
     public ChessboardCell(int x, int y, ChessboardModel board) {
         super();
         this.x_cord = x;
         this.y_cord = y;
         this.chessboardModel = board;
         this.piece = null;
-
+        this.setBackground((x+y) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226));
         this.symbol = "";
     }
+    /*
+    Change tile UI when selected.
+     */
+    public void select(){
+        this.setBackground((x_cord+y_cord) % 2 == 0? new Color(165, 155, 155) : new Color(204, 204, 204));
+        this.chessboardModel.notifyContentChanged();
+    }
 
+    /*
+    Change tile UI when deselected.
+     */
+    public void deselect(){
+        this.setBackground((x_cord+y_cord) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226));
+        this.chessboardModel.notifyContentChanged();
+    }
+
+    /*
+    Notify datamodel to check if there is a checkmate.
+     */
+    public void checkCheckmate() {
+        this.chessboardModel.checkCheckMate();
+    }
+
+    /*
+    getter for Symbol variable.
+     */
     public String getSymbol() {
         return this.symbol;
     }
 
+    /*
+    getter for X_cord
+     */
     public int getX() {
         return x_cord;
     }
+
+    /*
+    getter for Y_cord
+     */
     public int getY() {
         return y_cord;
     }
 
+    /*
+    getter for vacant variable.
+     */
     public boolean isVacant() {
         return vacant;
     }
 
+    /*
+    Reset every var to its original value.
+     */
     public void clearCell(){
         this.piece = null;
         this.vacant = true;
         updateSymbol();
     }
 
+    /*
+    Helper function to update label on the tile.
+     */
     public void updateLabel() {
         super.removeAll();
         JLabel label = new JLabel(symbol, SwingConstants.CENTER);
@@ -59,6 +96,9 @@ public class ChessboardCell extends JPanel {
         super.add(label);
     }
 
+    /*
+    Setter for piece. If current tile is already occupied, throw an exception.
+     */
     public void setPiece(Piece newPiece){
         if (this.piece != null) {
             throw new ArithmeticException("Cell Error for " + x_cord + ", " + y_cord + ": Cell should not hold two pieces.");
@@ -70,6 +110,9 @@ public class ChessboardCell extends JPanel {
         }
     }
 
+    /*
+    Update symbol string after some changes are made. It is called everytime when you make any change to a tile.
+     */
     private void updateSymbol() {
         if (this.isVacant()) {
             symbol = "";
@@ -140,14 +183,23 @@ public class ChessboardCell extends JPanel {
             }
         }
     }
-
+    /*
+    getter for piece variable.
+     */
     public Piece getPiece(){
         return this.piece;
     }
 
+    /*
+    Get cell at a designated coordinate.
+     */
     public ChessboardCell getCell(int x, int y) {
         return chessboardModel.getCell(x, y);
     }
+
+    /*
+    Get data model object.
+     */
     public ChessboardModel getChessboardModel() {
         return this.chessboardModel;
     }

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * Created by songyuli on 9/17/17.
  *
- * Abstract class of piece
+ * Abstract class of piece. All pieces classes should extends from this one, since only a Piece object can be accepted by tile object.
  */
 public abstract class Piece {
     private boolean isOnboard;
@@ -23,6 +23,9 @@ public abstract class Piece {
         this.lastPieceCaptured = null;
     }
 
+    /*
+    Check if a piece should move to the target location.
+     */
     public void willMove(ChessboardCell targetCell, boolean animated) {
         if(this.checkViablePath(targetCell)) {
             this.lastLocation = this.getChessboardCell();
@@ -37,6 +40,9 @@ public abstract class Piece {
         }
     }
 
+    /*
+    Actually move the piece to target location.
+     */
     public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
         setCell(targetCell);
@@ -44,6 +50,7 @@ public abstract class Piece {
             this.cell.checkCheckmate();
         }
     }
+
     /*
      * resume last step. Should only be used immediately after a move to verify checkmate
      */
@@ -60,6 +67,9 @@ public abstract class Piece {
         }
     }
 
+    /*
+    set the cell of this piece.
+     */
     private void setCell(ChessboardCell targetCell) {
         this.cell.clearCell();
         this.cell = targetCell;
@@ -67,25 +77,40 @@ public abstract class Piece {
         this.cell.getChessboardModel().notifyContentChanged();
     }
 
+    /*
+    Called before a piece is removed from the board. (i.e. is captured)
+     */
     public void willRemoveFromBoard() {
         this.getChessboardCell().clearCell();
         this.cell = null;
         this.didRemoveFromBoard();
     }
 
+    /*
+    Called after a piece is removed from the board. (i.e. is captured)
+     */
     public void didRemoveFromBoard() {
         // TODO: Update GUI here
         this.isOnboard = false;
     }
 
+    /*
+    Check if a piece is on the board.
+     */
     public boolean isOnBoard() {
         return this.isOnboard;
     }
 
+    /*
+    Getter for the ChessboardCell variable. (reference)
+     */
     public ChessboardCell getChessboardCell() {
         return this.cell;
     }
 
+    /*
+    getter for the owner variable.
+     */
     public Player getOwner() {
         return this.owner;
     }
@@ -105,5 +130,8 @@ public abstract class Piece {
         return ret;
     }
 
+    /*
+    Check if a piece can move to the target location. Different kind of pieces should implement this function differently.
+     */
     public abstract boolean checkViablePath(ChessboardCell targetCell);
 }

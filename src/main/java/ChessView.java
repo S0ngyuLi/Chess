@@ -8,13 +8,15 @@ import java.awt.event.ActionListener;
  */
 public class ChessView {
     private ChessboardModel board;
+    private JFrame window;
     public static int tileDimension = 50;
+
     public ChessView(ChessboardModel board){
         this.board = board;
-        JFrame window = new JFrame("Chess Game");
+        this.window = new JFrame("Chess Game");
         window.setSize(tileDimension * 8 + 4, tileDimension * 9 + 30);
         JPanel mainPanel = initializeMainPanel();
-        setUpTiles(mainPanel);
+        setUpControllers(mainPanel);
         JPanel menuBar = initializeMenuPanel();
         setUpButtons(menuBar);
         mainPanel.add(menuBar, BorderLayout.SOUTH);
@@ -24,6 +26,20 @@ public class ChessView {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /*
+    Display game results through a diaglog box.
+     */
+    public void triggerWin(String playerName) {
+        JOptionPane.showMessageDialog(window,
+                "Let's congratulate " + playerName + ".",
+                "Player " + playerName + " wins!" ,
+                JOptionPane.PLAIN_MESSAGE);
+        board.initializeBoard();
+    }
+
+    /*
+    Returns a JPanel object that should be used as menu bar.
+     */
     private JPanel initializeMenuPanel() {
         JPanel menuBar = new JPanel();
         menuBar.setPreferredSize(new Dimension(tileDimension * 3, tileDimension));
@@ -31,7 +47,10 @@ public class ChessView {
         return menuBar;
     }
 
-    private void setUpTiles(JPanel panel) {
+    /*
+    Setup controllers for the view.
+     */
+    private void setUpControllers(JPanel panel) {
         JList<JPanel> myList = new JList<JPanel>(this.board);
         JScrollPane listScroller = new JScrollPane(myList);
         listScroller.setPreferredSize(new Dimension(tileDimension * 8, tileDimension * 8));
@@ -43,7 +62,10 @@ public class ChessView {
         panel.add(listScroller);
     }
 
-    private void setUpButtons(JPanel panel) {
+    /*
+    Set up buttons for menu bar.
+     */
+    private void setUpButtons(JPanel menuBar) {
         JButton initializeButton = new JButton("Start over");
         initializeButton.setSize(3 * tileDimension, tileDimension);
         initializeButton.setVisible(true);
@@ -62,10 +84,13 @@ public class ChessView {
                 board.initializeFairyBoard();
             }
         });
-        panel.add(initializeButton);
-        panel.add(initializeFairyButton);
+        menuBar.add(initializeButton);
+        menuBar.add(initializeFairyButton);
     }
 
+    /*
+    returns a JPanel object that should be displayed in the center of the app.
+     */
     private JPanel initializeMainPanel() {
         JPanel myPanel = new JPanel();
         myPanel.setPreferredSize(new Dimension(tileDimension * 8, tileDimension * 8));

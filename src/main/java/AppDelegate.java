@@ -8,6 +8,7 @@ public class AppDelegate {
     private ChessboardModel board;
     private Player playerA;
     private Player playerB;
+    private ChessView mainView;
 
     public AppDelegate(Player playerA, Player playerB, ChessboardModel board) {
         this.playerA = playerA;
@@ -21,17 +22,26 @@ public class AppDelegate {
         this.board = new ChessboardModel(this.playerA, this.playerB, this);
     }
 
+    /*
+    Initialize the game with a GUI running
+     */
     public void initGame() {
         board.initializeBoard();
-        ChessView mainView = new ChessView(this.board);
+        mainView = new ChessView(this.board);
         // TODO: Waiting for input
     }
 
+    /*
+    Temporarily suspend the game to trigger a winning scenario.
+     */
     public void endWithWinner(Player player){
         player.win();
+        if(mainView != null) {
+            mainView.triggerWin(player.getName());
+        }
     }
     public static void main(String[] args) {
-        AppDelegate app = new AppDelegate("A", "B");
+        AppDelegate app = new AppDelegate("White Player", "Black Player");
         app.initGame();
     }
 }
