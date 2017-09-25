@@ -51,14 +51,9 @@ public class ChessView {
     Setup controllers for the view.
      */
     private void setUpControllers(JPanel panel) {
-        JList<JPanel> myList = new JList<JPanel>(this.board);
+        JList<JPanel> myList = new ChessboardViewModel(this.board);
         JScrollPane listScroller = new JScrollPane(myList);
         listScroller.setPreferredSize(new Dimension(tileDimension * 8, tileDimension * 8));
-        myList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        myList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        myList.setVisibleRowCount(8);
-        myList.setCellRenderer(new TileRender(this.board));
-        myList.addMouseListener(new BoardMouseAdapter(this.board));
         panel.add(listScroller);
     }
 
