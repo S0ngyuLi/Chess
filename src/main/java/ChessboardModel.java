@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ChessboardModel implements ListModel<JPanel> {
+    private boolean AShouldMove;
     private ChessboardCell [][] cells;
     private HashSet<Piece> box; // A box of pieces that have been captured
     private King kingForA;
@@ -37,6 +38,7 @@ public class ChessboardModel implements ListModel<JPanel> {
     public AppDelegate appDelegate;
 
     public ChessboardModel(Player playerA, Player playerB, AppDelegate delegate){
+        this.AShouldMove = true;
         this.cells = new ChessboardCell[8][8];
         this.playerA = playerA;
         this.playerB = playerB;
@@ -54,6 +56,14 @@ public class ChessboardModel implements ListModel<JPanel> {
                 cells[i][j].setLayout(new BorderLayout());
             }
         }
+    }
+
+    public boolean getAShouldMove() {
+        return this.AShouldMove;
+    }
+
+    public void toggleAShouldMove() {
+        this.AShouldMove = !AShouldMove;
     }
 
     /*

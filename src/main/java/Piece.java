@@ -27,7 +27,7 @@ public abstract class Piece {
     Check if a piece should move to the target location.
      */
     public void willMove(ChessboardCell targetCell, boolean animated) {
-        if(this.checkViablePath(targetCell)) {
+        if(this.checkViablePath(targetCell) && this.isMyTurn(animated)) {
             this.lastLocation = this.getChessboardCell();
             if (targetCell.isVacant() != true) {
                 this.lastPieceCaptured = targetCell.getPiece();
@@ -46,6 +46,7 @@ public abstract class Piece {
     public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
         setCell(targetCell);
+        this.getChessboardCell().getChessboardModel().toggleAShouldMove();
         if (animated == true) {
             this.cell.checkCheckmate();
         }
@@ -133,5 +134,15 @@ public abstract class Piece {
     /*
     Check if a piece can move to the target location. Different kind of pieces should implement this function differently.
      */
-    public abstract boolean checkViablePath(ChessboardCell targetCell);
+    abstract public boolean checkViablePath(ChessboardCell targetCell);
+
+    public boolean isMyTurn(boolean  animated) {
+        if (animated == false) {
+            return true;
+        }
+        if ((this.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerA()) == this.getChessboardCell().getChessboardModel().getAShouldMove()) {
+            return true;
+        }
+        return false;
+    }
 }
