@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by songyuli on 9/17/17.
@@ -22,12 +24,17 @@ public class ChessboardCell extends JPanel {
         this.y_cord = y;
         this.chessboardModel = board;
         this.piece = null;
-        this.setBackground((x+y) % 2 == 0? new Color(178, 158, 158) : new Color(226, 226, 226));
+        this.deselect();
         this.symbol = "";
     }
     /*
     Change tile UI when selected.
      */
+    public void isInCheck() {
+        setBackground(new Color(255, 150, 58));
+        chessboardModel.notifyContentChanged();
+    }
+
     public void select(){
         this.setBackground((x_cord+y_cord) % 2 == 0? new Color(165, 155, 155) : new Color(204, 204, 204));
         this.chessboardModel.notifyContentChanged();

@@ -46,8 +46,8 @@ public abstract class Piece {
     public void didMove(ChessboardCell targetCell, boolean animated) {
         // TODO: Update GUI here
         setCell(targetCell);
-        this.getChessboardCell().getChessboardModel().toggleAShouldMove();
         if (animated == true) {
+            this.getChessboardCell().getChessboardModel().toggleAShouldMove();
             this.cell.checkCheckmate();
         }
     }
@@ -62,6 +62,14 @@ public abstract class Piece {
             lastLocation = null;
         }
         if(lastPieceCaptured != null) {
+            if (lastPieceCaptured.getOwner() == this.getChessboardCell().getChessboardModel().getPlayerA()) {
+                this.getChessboardCell().getChessboardModel().piecesForPlayerA.add(lastPieceCaptured);
+                this.getChessboardCell().getChessboardModel().box.remove(lastPieceCaptured);
+            }
+            else {
+                this.getChessboardCell().getChessboardModel().piecesForPlayerB.add(lastPieceCaptured);
+                this.getChessboardCell().getChessboardModel().box.remove(lastPieceCaptured);
+            }
             currLocation.setPiece(lastPieceCaptured);
             lastPieceCaptured.setCell(currLocation);
             lastPieceCaptured = null;
