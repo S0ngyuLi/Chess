@@ -32,9 +32,11 @@ public abstract class Piece {
             if (targetCell.isVacant() != true) {
                 this.lastPieceCaptured = targetCell.getPiece();
                 this.getChessboardCell().getChessboardModel().capturePieces(targetCell);
+                this.getChessboardCell().getChessboardModel().stack.add(new UndoCommand(this, this.getChessboardCell().getChessboardModel(), this.getChessboardCell(), targetCell, targetCell.getPiece()));
             }
             else {
                 this.lastPieceCaptured = null;
+                this.getChessboardCell().getChessboardModel().stack.add(new UndoCommand(this, this.getChessboardCell().getChessboardModel(), this.getChessboardCell(), targetCell, null));
             }
             this.didMove(targetCell, animated);
         }
@@ -79,7 +81,7 @@ public abstract class Piece {
     /*
     set the cell of this piece.
      */
-    private void setCell(ChessboardCell targetCell) {
+    public void setCell(ChessboardCell targetCell) {
         this.cell.clearCell();
         this.cell = targetCell;
         targetCell.setPiece(this);

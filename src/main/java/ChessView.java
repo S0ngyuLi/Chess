@@ -79,8 +79,20 @@ public class ChessView {
                 board.initializeFairyBoard();
             }
         });
+
+        JButton undoButton = new JButton("Undo");
+        undoButton.setSize(3 * tileDimension, tileDimension);
+        undoButton.setVisible(true);
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                board.stack.peek().execute();
+                board.stack.pop();
+            }
+        });
         menuBar.add(initializeButton);
         menuBar.add(initializeFairyButton);
+        menuBar.add(undoButton);
     }
 
     /*

@@ -12,11 +12,13 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 
 public class ChessboardModel implements ListModel<JPanel> {
     private boolean AShouldMove;
     private ChessboardCell [][] cells;
     public HashSet<Piece> box; // A box of pieces that have been captured
+    public Stack<UndoCommand> stack;
     private King kingForA;
     private King kingForB;
 
@@ -38,6 +40,7 @@ public class ChessboardModel implements ListModel<JPanel> {
     public AppDelegate appDelegate;
 
     public ChessboardModel(Player playerA, Player playerB, AppDelegate delegate){
+        this.stack = new Stack<UndoCommand>();
         this.AShouldMove = true;
         this.cells = new ChessboardCell[8][8];
         this.playerA = playerA;
