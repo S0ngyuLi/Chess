@@ -23,4 +23,10 @@ public class PlayerTest {
         Assert.assertEquals(1, player.getScore());
     }
 
+    @Test
+    public void setNameTest(){
+        player.setName("new name");
+        Assert.assertEquals("new name", player.getName());
+    }
+
 }

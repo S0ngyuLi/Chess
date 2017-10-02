@@ -28,15 +28,24 @@ public abstract class Piece {
      */
     public void willMove(ChessboardCell targetCell, boolean animated) {
         if(this.checkViablePath(targetCell) && this.isMyTurn(animated)) {
-            this.lastLocation = this.getChessboardCell();
-            if (targetCell.isVacant() != true) {
-                this.lastPieceCaptured = targetCell.getPiece();
-                this.getChessboardCell().getChessboardModel().capturePieces(targetCell);
-                this.getChessboardCell().getChessboardModel().stack.add(new UndoCommand(this, this.getChessboardCell().getChessboardModel(), this.getChessboardCell(), targetCell, targetCell.getPiece()));
+            if (animated == false) {
+                this.lastLocation = this.getChessboardCell();
+                if(targetCell.isVacant() != true) {
+                    this.lastPieceCaptured = targetCell.getPiece();
+                    this.getChessboardCell().getChessboardModel().capturePieces(targetCell);
+                }
+                else {
+                    this.lastPieceCaptured = null;
+                }
             }
             else {
-                this.lastPieceCaptured = null;
-                this.getChessboardCell().getChessboardModel().stack.add(new UndoCommand(this, this.getChessboardCell().getChessboardModel(), this.getChessboardCell(), targetCell, null));
+                if (targetCell.isVacant() != true) {
+                    this.getChessboardCell().getChessboardModel().stack.add(new UndoCommand(this, this.getChessboardCell().getChessboardModel(), this.getChessboardCell(), targetCell, targetCell.getPiece()));
+                    this.getChessboardCell().getChessboardModel().capturePieces(targetCell);
+                }
+                else {
+                    this.getChessboardCell().getChessboardModel().stack.add(new UndoCommand(this, this.getChessboardCell().getChessboardModel(), this.getChessboardCell(), targetCell, null));
+                }
             }
             this.didMove(targetCell, animated);
         }
@@ -72,7 +81,6 @@ public abstract class Piece {
                 this.getChessboardCell().getChessboardModel().piecesForPlayerB.add(lastPieceCaptured);
                 this.getChessboardCell().getChessboardModel().box.remove(lastPieceCaptured);
             }
-            currLocation.setPiece(lastPieceCaptured);
             lastPieceCaptured.setCell(currLocation);
             lastPieceCaptured = null;
         }
@@ -82,7 +90,12 @@ public abstract class Piece {
     set the cell of this piece.
      */
     public void setCell(ChessboardCell targetCell) {
-        this.cell.clearCell();
+        if (this.cell == targetCell) {
+            return;
+        }
+        if (this.cell != null) {
+            this.cell.clearCell();
+        }
         this.cell = targetCell;
         targetCell.setPiece(this);
         this.cell.getChessboardModel().notifyContentChanged();

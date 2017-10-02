@@ -108,7 +108,10 @@ public class ChessboardCell extends JPanel {
      */
     public void setPiece(Piece newPiece){
         if (this.piece != null) {
-            throw new ArithmeticException("Cell Error for " + x_cord + ", " + y_cord + ": Cell should not hold two pieces.");
+            this.getChessboardModel().debugPrint();
+            throw new ArithmeticException("Cell Error for " + x_cord + ", " + y_cord + ": Cell should not hold two pieces.\n" +
+                    "Original Piece: " + this.piece.getClass().getName() + "(" + System.identityHashCode(this.piece)  + ") for " + ((this.piece.getOwner() == this.getChessboardModel().getPlayerA()) ? "Player A":"Player B") + "\n" +
+                    "Tried to add: " + newPiece.getClass().getName() +  "(" + System.identityHashCode(newPiece)  + ") for " + ((newPiece.getOwner() == this.getChessboardModel().getPlayerA()) ? "Player A":"Player B") + "\n");
         }
         else {
             this.piece = newPiece;

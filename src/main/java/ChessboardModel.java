@@ -111,6 +111,8 @@ public class ChessboardModel implements ListModel<JPanel> {
         Initialize a board with all conventional pieces
      */
     public void initializeBoard() {
+        this.stack = new Stack<>();
+        this.AShouldMove = true;
         this.box = new HashSet<Piece>();
         this.piecesForPlayerA = new HashSet<>();
         this.piecesForPlayerB = new HashSet<>();
@@ -158,9 +160,11 @@ public class ChessboardModel implements ListModel<JPanel> {
      */
 
     public void initializeFairyBoard() {
+        this.stack = new Stack<>();
         this.box = new HashSet<Piece>();
         this.piecesForPlayerA = new HashSet<>();
         this.piecesForPlayerB = new HashSet<>();
+        this.AShouldMove = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 cells[i][j].clearCell();
@@ -230,10 +234,12 @@ public class ChessboardModel implements ListModel<JPanel> {
         Check if A is about to win
     */
     private boolean checkCheckMateForA() {
-        kingForB.getChessboardCell().deselect();
         for (Piece piece: this.piecesForPlayerA) {
             piece.getChessboardCell().deselect();
             if (piece.checkViablePath(kingForB.getChessboardCell())) {
+                if (this.AShouldMove) {
+                    return true;
+                }
                 piece.getChessboardCell().isInCheck();
                 for (Piece rivalPiece : this.piecesForPlayerB) {
                     ArrayList<ChessboardCell> possibleRoutesB = rivalPiece.getAllPossibleRoutes();
@@ -260,10 +266,12 @@ public class ChessboardModel implements ListModel<JPanel> {
         Check if B is about to win
      */
     private boolean checkCheckMateForB() {
-        kingForA.getChessboardCell().deselect();
         for (Piece piece: this.piecesForPlayerB) {
             piece.getChessboardCell().deselect();
             if (piece.checkViablePath(kingForA.getChessboardCell())) {
+                if (!this.AShouldMove) {
+                    return true;
+                }
                 piece.getChessboardCell().isInCheck();
                 for (Piece rivalPiece : this.piecesForPlayerA) {
                     ArrayList<ChessboardCell> possibleRoutesA = rivalPiece.getAllPossibleRoutes();

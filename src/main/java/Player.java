@@ -32,4 +32,11 @@ public class Player {
     public String getName(){
         return name;
     }
+
+    /*
+    setter for the name variable.
+     */
+    public void setName(String newName){
+        this.name = newName;
+    }
 }
