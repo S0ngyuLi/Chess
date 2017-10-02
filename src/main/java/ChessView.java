@@ -121,7 +121,7 @@ public class ChessView {
                 }
             }
         });
-        JButton initializeFairyButton = new JButton("Fairy pieces");
+        JButton initializeFairyButton = new JButton("Start over with fairy pieces");
         initializeFairyButton.setSize(3 * tileDimension, tileDimension);
         initializeFairyButton.setVisible(true);
         initializeFairyButton.addActionListener(new ActionListener() {

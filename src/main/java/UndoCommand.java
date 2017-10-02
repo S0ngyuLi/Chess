@@ -1,3 +1,7 @@
+/**
+ * Created by songyuli on 10/1/17.
+ * A undo command class following command pattern.
+ */
 public class UndoCommand {
     private Piece piece;
     private Piece captured;
@@ -12,6 +16,9 @@ public class UndoCommand {
         this.captured = captured;
     }
 
+    /*
+        Execute the class. i.e. It should only be called once it is removed from the commands stack.
+     */
     public void execute() {
         piece.setCell(originalCell);
         if (piece instanceof  Pawn) {

@@ -40,8 +40,4 @@ public class AppDelegate {
             mainView.triggerWin(player.getName());
         }
     }
-    public static void main(String[] args) {
-        AppDelegate app = new AppDelegate("White Player", "Black Player");
-        app.initGame();
-    }
 }
